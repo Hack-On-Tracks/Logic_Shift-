@@ -209,7 +209,7 @@ export default function AnalysisPage() {
     setRunning(true);
     setLastResult(null);
     try {
-      const result = await analyzeImage(file, undefined);
+      const result = await analyzeImage(file, undefined, notes);
       setLastResult(result);
       setAnalyses(prev => [result, ...prev]);
       const pCount = getPeopleCount(result);
@@ -219,8 +219,9 @@ export default function AnalysisPage() {
       setToast({ type: 'success', msg: `YOLO detected ${total} objects (${pCount} people, ${vCount} vehicles, ${oCount} obstacles).` });
       clearUpload();
       setNotes('');
-    } catch (err) {
-      setToast({ type: 'error', msg: 'Vision analysis failed. Check if API server is running.' });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Vision analysis failed. Check if API server is running.';
+      setToast({ type: 'error', msg });
     } finally {
       setRunning(false);
     }

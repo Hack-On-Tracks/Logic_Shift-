@@ -269,10 +269,17 @@ export async function deleteIncident(id: number): Promise<{ message: string }> {
 // ═══════════════════════════════════════════════════════════════
 // VISION / ANALYSIS
 // ═══════════════════════════════════════════════════════════════
-export async function analyzeImage(file: File, incidentId?: number): Promise<ApiAnalysis> {
+export async function analyzeImage(
+  file: File,
+  incidentId?: string | number | null,
+  notes?: string | null,
+  location?: string | null
+): Promise<ApiAnalysis> {
   const form = new FormData();
   form.append('file', file);
-  if (incidentId != null) form.append('incident_id', String(incidentId));
+  if (incidentId) form.append('incident_id', String(incidentId));
+  if (notes) form.append('notes', notes);
+  if (location) form.append('location', location);
 
   const res = await fetch(`${BASE}/api/vision/analyze`, { method: 'POST', body: form });
   if (!res.ok) {

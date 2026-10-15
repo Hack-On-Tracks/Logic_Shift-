@@ -61,7 +61,7 @@ class DetectionOut(BaseModel):
 
 class ImageAnalysisOut(BaseModel):
     id: str
-    incident_id: str
+    incident_id: Optional[str] = None
     file_path: str
     annotated_path: Optional[str] = None
     file_name: str

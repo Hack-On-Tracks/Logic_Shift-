@@ -243,7 +243,7 @@ async def delete_incident(incident_id: str, db: Session = Depends(get_db)):
 @app.post("/api/vision/analyze", response_model=ImageAnalysisOut)
 async def analyze_image(
     file: UploadFile = File(...),
-    incident_id: str = Form(...),
+    incident_id: Optional[str] = Form(None),
     location: Optional[str] = Form(None),
     notes: Optional[str] = Form(None),
     db: Session = Depends(get_db)
@@ -252,6 +252,17 @@ async def analyze_image(
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in [".jpg", ".jpeg", ".png"]:
         raise HTTPException(status_code=400, detail="Only JPG, JPEG, and PNG images are supported.")
+
+    # Sanitize and validate incident_id
+    clean_incident_id = None
+    if incident_id:
+        s = incident_id.strip()
+        if s and s.lower() not in ["undefined", "null", "none"]:
+            exists = db.query(Incident).filter(Incident.id == s).first()
+            if exists:
+                clean_incident_id = exists.id
+            else:
+                logger.info(f"Incident {s} not found in DB; running standalone aerial analysis")
 
     analysis_id = f"ANA-{uuid.uuid4().hex[:6].upper()}"
     saved_filename = f"{analysis_id}_{file.filename}"
@@ -265,7 +276,7 @@ async def analyze_image(
 
     new_analysis = ImageAnalysis(
         id=analysis_id,
-        incident_id=incident_id,
+        incident_id=clean_incident_id,
         file_path=f"/uploads/{saved_filename}",
         annotated_path=f"/uploads/{res['annotated_filename']}",
         file_name=file.filename,

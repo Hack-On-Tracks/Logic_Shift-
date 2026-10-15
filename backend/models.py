@@ -38,7 +38,7 @@ class ImageAnalysis(Base):
     __tablename__ = "image_analyses"
 
     id = Column(String(50), primary_key=True, index=True)
-    incident_id = Column(String(50), ForeignKey("incidents.id", ondelete="CASCADE"), nullable=False)
+    incident_id = Column(String(50), ForeignKey("incidents.id", ondelete="SET NULL"), nullable=True)
     file_path = Column(String(500), nullable=False)
     annotated_path = Column(String(500), nullable=True)
     file_name = Column(String(255), nullable=False)
