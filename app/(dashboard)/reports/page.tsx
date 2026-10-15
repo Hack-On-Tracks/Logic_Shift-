@@ -30,10 +30,10 @@ function ReportPreview({ report, incident, tasks, analyses, onClose }: {
         <div className="flex items-start justify-between mb-2">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-7 h-7 bg-[#F47B20] border-2 border-black flex items-center justify-center">
-                <FileText size={15} className="text-black stroke-[3]" />
+              <div className="w-7 h-7 bg-[#2563EB] border-2 border-black flex items-center justify-center">
+                <FileText size={15} className="text-white stroke-[3]" />
               </div>
-              <span className="text-[#F47B20] font-black text-sm uppercase tracking-wider">LIVE TRACK // INCIDENT AUDIT</span>
+              <span className="text-[#2563EB] font-black text-sm uppercase tracking-wider">LIVE TRACK // INCIDENT AUDIT</span>
             </div>
             <p className="text-slate-400 text-xs">DOSSIER REF // {report.id}</p>
           </div>
@@ -44,7 +44,7 @@ function ReportPreview({ report, incident, tasks, analyses, onClose }: {
       </div>
 
       {report.isDemoResult && (
-        <div className="flex items-start gap-2 bg-[#FACC15] text-black border-2 border-black p-3 shadow-[3px_3px_0px_#000]">
+        <div className="flex items-start gap-2 bg-[#2563EB] text-white border-2 border-black p-3 shadow-[3px_3px_0px_#000]">
           <Info size={16} className="mt-0.5 flex-shrink-0" />
           <p className="text-xs font-black leading-snug">
             DEMO AUDIT // DETECTION TOTALS REPRESENT SAMPLE PROTOTYPE DATA STREAMS ONLY.
@@ -77,7 +77,7 @@ function ReportPreview({ report, incident, tasks, analyses, onClose }: {
             </div>
             <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
               <p className="text-slate-400 text-[10px] font-black uppercase mb-0.5">CORPS</p>
-              <p className="text-[#F47B20] text-xs font-black">{incident.assignedTeam}</p>
+              <p className="text-[#2563EB] text-xs font-black">{incident.assignedTeam}</p>
             </div>
           </div>
           <div className="flex gap-2 pt-1">
@@ -161,7 +161,7 @@ function ReportPreview({ report, incident, tasks, analyses, onClose }: {
         </button>
         <button
           onClick={() => window.print()}
-          className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
         >
           <Printer size={15} className="stroke-[3]" /> PRINT AUDIT
         </button>
@@ -230,7 +230,7 @@ export default function ReportsPage() {
     showToast({ type: 'success', title: 'CSV EXPORTED' });
   }
 
-  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
 
   return (
     <div className="space-y-5 font-mono">
@@ -257,9 +257,9 @@ export default function ReportsPage() {
             <button
               key={inc.id}
               onClick={() => generateReport(inc.id)}
-              className="flex items-center gap-2 px-3 py-2 bg-[#0B1220] hover:bg-[#F47B20] hover:text-black text-white border-2 border-black text-xs font-bold uppercase shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+              className="flex items-center gap-2 px-3 py-2 bg-[#0B1220] hover:bg-[#2563EB] hover:text-white text-white border-2 border-black text-xs font-bold uppercase shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
             >
-              <FileText size={13} className="text-[#F47B20] group-hover:text-black" />
+              <FileText size={13} className="text-[#2563EB] group-hover:text-white" />
               {truncate(inc.title, 26)}
             </button>
           ))}
@@ -271,7 +271,7 @@ export default function ReportsPage() {
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
-            className="bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20] w-60"
+            className="bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB] w-60"
             placeholder="FILTER AUDIT REPORTS..."
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -307,7 +307,7 @@ export default function ReportsPage() {
                   const inc = incidentMap[r.incidentId];
                   return (
                     <tr key={r.id} className="hover:bg-white/5 transition">
-                      <td className="px-5 py-3 text-[#F47B20] text-xs font-black">{r.id}</td>
+                      <td className="px-5 py-3 text-[#2563EB] text-xs font-black">{r.id}</td>
                       <td className="px-5 py-3">
                         <p className="text-white text-xs font-black">{inc ? truncate(inc.title, 38) : r.incidentId}</p>
                         {r.isDemoResult && <span className="text-[#FACC15] text-[10px] font-bold">[DEMO CALIBRATION]</span>}

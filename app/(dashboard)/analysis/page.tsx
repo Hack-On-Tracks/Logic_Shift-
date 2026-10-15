@@ -43,7 +43,7 @@ function AnalysisDetail({ analysis, incidentTitle, onClose }: {
         </div>
         <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
           <p className="text-slate-400 text-[10px] font-black uppercase mb-0.5">PAYLOAD FILENAME</p>
-          <p className="text-[#F47B20] text-xs font-black">{analysis.fileName}</p>
+          <p className="text-[#2563EB] text-xs font-black">{analysis.fileName}</p>
         </div>
         <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
           <p className="text-slate-400 text-[10px] font-black uppercase mb-0.5">TARGET ZONE</p>
@@ -53,10 +53,10 @@ function AnalysisDetail({ analysis, incidentTitle, onClose }: {
 
       {/* Detection summary blocks */}
       <div className="grid grid-cols-3 gap-3">
-        {([['VICTIMS', 'Person', 'text-black', 'bg-[#4ADE80]'], ['VEHICLES', 'Vehicle', 'text-black', 'bg-[#38BDF8]'], ['OBSTACLES', 'Obstacle', 'text-black', 'bg-[#FACC15]']] as const).map(([label, cls, color, bg]) => (
+        {([['VICTIMS', 'Person', 'text-black', 'bg-[#4ADE80]'], ['VEHICLES', 'Vehicle', 'text-black', 'bg-[#38BDF8]'], ['OBSTACLES', 'Obstacle', 'text-white', 'bg-[#EF4444]']] as const).map(([label, cls, color, bg]) => (
           <div key={cls} className={`${bg} border-2 border-black p-3 text-center shadow-[3px_3px_0px_#000]`}>
             <p className={`text-2xl font-black ${color}`}>{analysis.detections.filter(d => d.className === cls).length}</p>
-            <p className="text-black text-[10px] font-black uppercase tracking-wider">{label}</p>
+            <p className={`text-[10px] font-black uppercase tracking-wider ${color}`}>{label}</p>
           </div>
         ))}
       </div>
@@ -67,7 +67,7 @@ function AnalysisDetail({ analysis, incidentTitle, onClose }: {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition-all shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${filter === f ? 'bg-[#F47B20] text-black' : 'bg-black text-slate-300 hover:text-white'}`}
+            className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black transition-all shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${filter === f ? 'bg-[#2563EB] text-white' : 'bg-black text-slate-300 hover:text-white'}`}
           >
             {f}
           </button>
@@ -83,14 +83,14 @@ function AnalysisDetail({ analysis, incidentTitle, onClose }: {
             <div className="flex items-center gap-2.5">
               {d.className === 'Person' && <Users size={14} className="text-[#4ADE80]" />}
               {d.className === 'Vehicle' && <Car size={14} className="text-[#38BDF8]" />}
-              {d.className === 'Obstacle' && <Construction size={14} className="text-[#FACC15]" />}
+              {d.className === 'Obstacle' && <Construction size={14} className="text-[#EF4444]" />}
               <span className="text-white text-xs font-black uppercase tracking-wider">{d.className}</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-20 h-2.5 bg-black border border-white/20 overflow-hidden">
-                <div className="h-full bg-[#F47B20]" style={{ width: `${d.confidence * 100}%` }} />
+                <div className="h-full bg-[#2563EB]" style={{ width: `${d.confidence * 100}%` }} />
               </div>
-              <span className="text-[#F47B20] text-xs font-black w-8 text-right">{Math.round(d.confidence * 100)}%</span>
+              <span className="text-[#2563EB] text-xs font-black w-8 text-right">{Math.round(d.confidence * 100)}%</span>
             </div>
           </div>
         ))}
@@ -175,12 +175,12 @@ export default function AnalysisPage() {
 
   const incidentMap = useMemo(() => Object.fromEntries(incidents.map(i => [i.id, i.title])), [incidents]);
 
-  const inputCls = 'bg-[#0B1220] border-2 border-black px-3 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const inputCls = 'bg-[#0B1220] border-2 border-black px-3 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
 
   return (
     <div className="space-y-6 font-mono">
       {/* Demo disclaimer banner */}
-      <div className="flex items-start gap-3 bg-[#FACC15] text-black border-2 border-black p-3.5 shadow-[4px_4px_0px_#000]">
+      <div className="flex items-start gap-3 bg-[#2563EB] text-white border-2 border-black p-3.5 shadow-[4px_4px_0px_#000]">
         <Info size={18} className="flex-shrink-0 mt-0.5 stroke-[2.5]" />
         <p className="text-xs font-black uppercase tracking-wider leading-relaxed">
           PHASE 1 TACTICAL INTERFACE // AERIAL VISION INFERENCE SIMULATED WITH CALIBRATED DEMO VECTORS. NO LIVE TENSOR BACKEND ATTACHED.
@@ -202,9 +202,9 @@ export default function AnalysisPage() {
                 onDragLeave={() => setDragOver(false)}
                 onDrop={onDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-3 border-dashed p-8 text-center cursor-pointer transition-all ${dragOver ? 'border-[#F47B20] bg-[#F47B20]/15' : 'border-black bg-black/40 hover:bg-black/60 shadow-[4px_4px_0px_#000]'}`}
+                className={`border-3 border-dashed p-8 text-center cursor-pointer transition-all ${dragOver ? 'border-[#2563EB] bg-[#2563EB]/15' : 'border-black bg-black/40 hover:bg-black/60 shadow-[4px_4px_0px_#000]'}`}
               >
-                <Upload size={32} className="mx-auto mb-3 text-[#F47B20] stroke-[2.5]" />
+                <Upload size={32} className="mx-auto mb-3 text-[#2563EB] stroke-[2.5]" />
                 <p className="text-white text-xs font-black uppercase tracking-wider mb-1">DRAG & DROP DRONE FEED OR CLICK</p>
                 <p className="text-slate-400 text-[11px]">JPG, JPEG, PNG · MAX CEILING 20 MB</p>
                 <input ref={fileInputRef} type="file" accept=".jpg,.jpeg,.png" className="hidden"
@@ -216,12 +216,12 @@ export default function AnalysisPage() {
                 <img src={preview} alt="Drone Feed Preview" className="w-full h-48 object-cover border border-white/20" />
                 <button
                   onClick={clearUpload}
-                  className="absolute top-2.5 right-2.5 p-1 border-2 border-black bg-[#EF4444] text-black shadow-[2px_2px_0px_#000] hover:bg-[#DC2626] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                  className="absolute top-2.5 right-2.5 p-1 border-2 border-black bg-[#EF4444] text-white shadow-[2px_2px_0px_#000] hover:bg-[#DC2626] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
                 >
                   <X size={14} className="stroke-[3]" />
                 </button>
                 <div className="mt-2 px-1 pb-1">
-                  <p className="text-[#F47B20] text-xs font-black truncate">{file?.name}</p>
+                  <p className="text-[#2563EB] text-xs font-black truncate">{file?.name}</p>
                   <p className="text-slate-400 text-[10px]">{file ? (file.size / 1024).toFixed(0) : 0} KB // PAYLOAD READY</p>
                 </div>
               </div>
@@ -249,10 +249,10 @@ export default function AnalysisPage() {
             <button
               onClick={handleAnalyze}
               disabled={running || !file || !selectedIncident}
-              className="w-full mt-5 py-3 bg-[#F47B20] hover:bg-[#FFA154] disabled:opacity-40 disabled:cursor-not-allowed text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2"
+              className="w-full mt-5 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2"
             >
               {running ? (
-                <><div className="w-4 h-4 border-2 border-black border-t-transparent animate-spin" /> EXECUTING COMPUTER VISION...</>
+                <><div className="w-4 h-4 border-2 border-white border-t-transparent animate-spin" /> EXECUTING COMPUTER VISION...</>
               ) : (
                 <><ScanSearch size={16} className="stroke-[3]" /> RUN COMPUTER VISION PASS</>
               )}
@@ -270,7 +270,7 @@ export default function AnalysisPage() {
           <div className="bg-[#111C2E] border-3 border-black shadow-[6px_6px_0px_#000] overflow-hidden">
             <div className="px-5 py-3.5 bg-[#0B1220] border-b-2 border-black flex items-center justify-between">
               <h2 className="text-white font-black text-xs uppercase tracking-wider">PROCESSED AERIAL RECONNAISSANCE</h2>
-              <span className="text-[#F47B20] text-xs font-black">{analyses.length} ARCHIVES</span>
+              <span className="text-[#2563EB] text-xs font-black">{analyses.length} ARCHIVES</span>
             </div>
             {analyses.length === 0 ? (
               <EmptyState icon={ImageIcon} title="NO AERIAL PASSES PROCESSED" description="INGEST AN IMAGE PAYLOAD AND EXECUTE THE VISION PASS TO POPULATE RECON LOGS." />

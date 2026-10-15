@@ -14,12 +14,12 @@ export default function StatCard({
   label,
   value,
   icon: Icon,
-  color = 'text-black',
-  iconBg = 'bg-[#F47B20]',
+  color = 'text-white',
+  iconBg = 'bg-[#2563EB]',
   subtitle,
 }: StatCardProps) {
   return (
-    <div className="bg-[#111C2E] border-2 border-black shadow-[4px_4px_0px_#000] p-4 transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#F47B20]">
+    <div className="bg-[#111C2E] border-2 border-black shadow-[4px_4px_0px_#000] p-4 transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#2563EB]">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <p className="text-slate-400 text-[11px] font-black uppercase tracking-wider mb-1 font-mono">{label}</p>

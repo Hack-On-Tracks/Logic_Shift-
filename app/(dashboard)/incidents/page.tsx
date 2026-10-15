@@ -62,7 +62,7 @@ function IncidentForm({ initial, onSave, onClose }: {
 
   const field = 'flex flex-col gap-1.5';
   const label = 'text-white text-xs font-black uppercase tracking-wider font-mono';
-  const input = 'bg-[#0B1220] border-2 border-black rounded-none px-3 py-2 text-white text-sm font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const input = 'bg-[#0B1220] border-2 border-black rounded-none px-3 py-2 text-white text-sm font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
   const error = 'text-[#EF4444] text-xs font-mono font-bold';
 
   return (
@@ -140,7 +140,7 @@ function IncidentForm({ initial, onSave, onClose }: {
         </button>
         <button
           type="submit"
-          className="flex-1 py-3 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          className="flex-1 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
         >
           SAVE INCIDENT
         </button>
@@ -167,7 +167,7 @@ function IncidentDetail({ incident, onClose, onEdit }: { incident: Incident; onC
         <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-wider mb-0.5">LOCATION</p>
           <p className="text-white text-xs font-black">{incident.locationName}</p>
-          {incident.latitude && <p className="text-[#F47B20] text-[11px] mt-0.5">{incident.latitude}, {incident.longitude}</p>}
+          {incident.latitude && <p className="text-[#2563EB] text-[11px] mt-0.5">{incident.latitude}, {incident.longitude}</p>}
         </div>
         <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-wider mb-0.5">RESPONSE UNIT</p>
@@ -179,7 +179,7 @@ function IncidentDetail({ incident, onClose, onEdit }: { incident: Incident; onC
         </div>
         <div className="border-2 border-black bg-black/40 p-3 shadow-[2px_2px_0px_#000]">
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-wider mb-0.5">LOG IDENTIFIER</p>
-          <p className="text-[#F47B20] text-xs font-black">{incident.id}</p>
+          <p className="text-[#2563EB] text-xs font-black">{incident.id}</p>
         </div>
       </div>
       {incident.notes && (
@@ -197,7 +197,7 @@ function IncidentDetail({ incident, onClose, onEdit }: { incident: Incident; onC
         </button>
         <button
           onClick={onEdit}
-          className="flex-1 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          className="flex-1 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
         >
           EDIT INCIDENT
         </button>
@@ -265,7 +265,7 @@ export default function IncidentsPage() {
     setDeleteId(null);
   }
 
-  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
 
   return (
     <div className="space-y-5 font-mono">
@@ -277,7 +277,7 @@ export default function IncidentsPage() {
         </div>
         <button
           onClick={() => setFormOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all self-start sm:self-auto"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all self-start sm:self-auto"
         >
           <Plus size={16} className="stroke-[3]" /> LOG NEW INCIDENT
         </button>
@@ -288,7 +288,7 @@ export default function IncidentsPage() {
         <div className="relative flex-1">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
-            className="w-full bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]"
+            className="w-full bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]"
             placeholder="FILTER INCIDENTS BY ID, NAME, LOCATION..."
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -332,7 +332,7 @@ export default function IncidentsPage() {
               <tbody className="divide-y-2 divide-black">
                 {filtered.map(inc => (
                   <tr key={inc.id} className="hover:bg-white/5 transition">
-                    <td className="px-5 py-3 text-[#F47B20] text-xs font-black whitespace-nowrap">{inc.id}</td>
+                    <td className="px-5 py-3 text-[#2563EB] text-xs font-black whitespace-nowrap">{inc.id}</td>
                     <td className="px-5 py-3">
                       <p className="text-white text-xs font-black">{truncate(inc.title, 40)}</p>
                       <p className="text-slate-400 text-[11px] mt-0.5">{timeAgo(inc.reportedAt)}</p>

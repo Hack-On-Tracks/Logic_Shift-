@@ -24,8 +24,8 @@ export default function ConfirmDialog({
   return (
     <Modal open={open} onClose={onClose} title="" size="sm">
       <div className="p-6 text-center">
-        <div className={`w-14 h-14 border-2 border-black flex items-center justify-center mx-auto mb-4 shadow-[4px_4px_0px_#000] ${danger ? 'bg-[#EF4444]' : 'bg-[#F47B20]'}`}>
-          <AlertTriangle size={26} className="text-black" />
+        <div className={`w-14 h-14 border-2 border-black flex items-center justify-center mx-auto mb-4 shadow-[4px_4px_0px_#000] ${danger ? 'bg-[#EF4444]' : 'bg-[#2563EB]'}`}>
+          <AlertTriangle size={26} className="text-white" />
         </div>
         <h3 className="text-white font-black text-base uppercase tracking-wider mb-2 font-mono">{title}</h3>
         <p className="text-slate-300 text-sm mb-6 font-mono leading-relaxed">{message}</p>
@@ -38,7 +38,7 @@ export default function ConfirmDialog({
           </button>
           <button
             onClick={() => { onConfirm(); onClose(); }}
-            className={`px-6 py-2.5 border-2 border-black font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-black ${danger ? 'bg-[#EF4444] hover:bg-[#DC2626]' : 'bg-[#F47B20] hover:bg-[#E06B10]'}`}
+            className={`px-6 py-2.5 border-2 border-black font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all text-white ${danger ? 'bg-[#EF4444] hover:bg-[#DC2626]' : 'bg-[#2563EB] hover:bg-[#1D4ED8]'}`}
           >
             {confirmLabel}
           </button>

@@ -13,10 +13,10 @@ function Switch({ on, onToggle, label }: { on: boolean; onToggle: () => void; la
       <span className="text-white text-xs font-black uppercase tracking-wider font-mono">{label}</span>
       <button
         onClick={onToggle}
-        className={`w-12 h-6 border-2 border-black transition-colors relative shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${on ? 'bg-[#F47B20]' : 'bg-slate-700'}`}
+        className={`w-12 h-6 border-2 border-black transition-colors relative shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${on ? 'bg-[#2563EB]' : 'bg-slate-700'}`}
         aria-label={label}
       >
-        <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-black border border-white/40 transition-transform ${on ? 'translate-x-6 bg-black' : ''}`} />
+        <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-black border border-white/40 transition-transform ${on ? 'translate-x-6 bg-white' : ''}`} />
       </button>
     </div>
   );
@@ -41,12 +41,12 @@ export default function SettingsPage() {
       {/* Brand Card */}
       <div className="bg-[#111C2E] border-3 border-black shadow-[6px_6px_0px_#000] p-6">
         <div className="flex items-center gap-4 mb-4 pb-4 border-b-2 border-black">
-          <div className="w-14 h-14 bg-[#F47B20] border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_#000]">
-            <Target size={28} className="text-black stroke-[3]" />
+          <div className="w-14 h-14 bg-[#2563EB] border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_#000]">
+            <Target size={28} className="text-white stroke-[3]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <Radio size={14} className="text-[#F47B20]" />
+              <Radio size={14} className="text-[#2563EB]" />
               <span className="text-white font-black text-lg tracking-wider">LIVE TRACK // OPS</span>
             </div>
             <p className="text-slate-400 text-xs uppercase tracking-widest">BY LOGIC SHIFT</p>
@@ -54,8 +54,8 @@ export default function SettingsPage() {
         </div>
         <div className="space-y-2 text-xs">
           <div className="flex justify-between border-b border-black/40 pb-1.5"><span className="text-slate-400 uppercase">SYSTEM ARCHITECTURE</span><span className="text-white font-black">PHASE 1 TACTICAL FRONTEND</span></div>
-          <div className="flex justify-between border-b border-black/40 pb-1.5"><span className="text-slate-400 uppercase">PROJECT SPEC</span><span className="text-[#F47B20] font-black">RESCUEVISION AI</span></div>
-          <div className="flex justify-between border-b border-black/40 pb-1.5"><span className="text-slate-400 uppercase">UI THEME AESTHETIC</span><span className="text-[#FACC15] font-black">NEO-BRUTALISM // TACTICAL</span></div>
+          <div className="flex justify-between border-b border-black/40 pb-1.5"><span className="text-slate-400 uppercase">PROJECT SPEC</span><span className="text-[#2563EB] font-black">RESCUEVISION AI</span></div>
+          <div className="flex justify-between border-b border-black/40 pb-1.5"><span className="text-slate-400 uppercase">UI THEME AESTHETIC</span><span className="text-[#EF4444] font-black">TACTICAL BRUTALISM // BLUE & RED</span></div>
           <div className="flex justify-between"><span className="text-slate-400 uppercase">COMPILER ENGINE</span><span className="text-white font-black">NEXT.JS 16 // TURBOPACK</span></div>
         </div>
       </div>
@@ -69,13 +69,13 @@ export default function SettingsPage() {
           <div className="flex gap-3">
             <button
               onClick={() => updateSettings({ theme: 'dark' })}
-              className={`flex items-center gap-2 px-5 py-2.5 border-2 border-black text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all ${settings.theme === 'dark' ? 'bg-[#F47B20] text-black' : 'bg-black text-slate-300 hover:text-white'}`}
+              className={`flex items-center gap-2 px-5 py-2.5 border-2 border-black text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all ${settings.theme === 'dark' ? 'bg-[#2563EB] text-white' : 'bg-black text-slate-300 hover:text-white'}`}
             >
               <Moon size={15} className="stroke-[3]" /> BRUTALIST DARK (ACTIVE)
             </button>
             <button
               onClick={() => updateSettings({ theme: 'light' })}
-              className={`flex items-center gap-2 px-5 py-2.5 border-2 border-black text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all ${settings.theme === 'light' ? 'bg-[#F47B20] text-black' : 'bg-black text-slate-300 hover:text-white'}`}
+              className={`flex items-center gap-2 px-5 py-2.5 border-2 border-black text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all ${settings.theme === 'light' ? 'bg-[#2563EB] text-white' : 'bg-black text-slate-300 hover:text-white'}`}
             >
               <Sun size={15} /> LIGHT (PROTOTYPE)
             </button>
@@ -86,7 +86,7 @@ export default function SettingsPage() {
       {/* Notifications Switchboard */}
       <div className="bg-[#111C2E] border-3 border-black shadow-[6px_6px_0px_#000] p-6">
         <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-black">
-          <Bell size={16} className="text-[#F47B20] stroke-[2.5]" />
+          <Bell size={16} className="text-[#2563EB] stroke-[2.5]" />
           <h2 className="text-white font-black text-xs uppercase tracking-wider">DISPATCH TELEMETRY SWITCHBOARD</h2>
         </div>
         <div className="space-y-3">
@@ -96,7 +96,7 @@ export default function SettingsPage() {
         </div>
         <button
           onClick={handleSave}
-          className="mt-5 flex items-center gap-2 px-5 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          className="mt-5 flex items-center gap-2 px-5 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
         >
           <Save size={15} className="stroke-[3]" /> {saved ? 'SAVED TO LOCAL REPO!' : 'COMMIT PREFERENCES'}
         </button>

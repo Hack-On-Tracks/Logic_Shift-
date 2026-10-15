@@ -32,17 +32,17 @@ export function timeAgo(iso: string): string {
 
 export function priorityColor(p: Priority): string {
   switch (p) {
-    case 'Critical': return 'bg-[#EF4444] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'High': return 'bg-[#F47B20] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Medium': return 'bg-[#FACC15] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Critical': return 'bg-[#EF4444] text-white font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'High': return 'bg-[#2563EB] text-white font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Medium': return 'bg-[#FFFFFF] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
     case 'Low': return 'bg-[#94A3B8] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
   }
 }
 
 export function priorityDot(p: Priority): string {
   switch (p) {
-    case 'Critical': return 'bg-black';
-    case 'High': return 'bg-black';
+    case 'Critical': return 'bg-white';
+    case 'High': return 'bg-white';
     case 'Medium': return 'bg-black';
     case 'Low': return 'bg-black';
   }
@@ -50,28 +50,28 @@ export function priorityDot(p: Priority): string {
 
 export function incidentStatusColor(s: IncidentStatus): string {
   switch (s) {
-    case 'Reported': return 'bg-[#E2E8F0] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Reported': return 'bg-[#FFFFFF] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
     case 'Under Investigation': return 'bg-[#38BDF8] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Response In Progress': return 'bg-[#FB923C] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Resolved': return 'bg-[#4ADE80] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Closed': return 'bg-[#A1A1AA] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Response In Progress': return 'bg-[#2563EB] text-white font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Resolved': return 'bg-[#FFFFFF] text-[#2563EB] font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Closed': return 'bg-[#64748B] text-white font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
   }
 }
 
 export function taskStatusColor(s: TaskStatus): string {
   switch (s) {
-    case 'Pending': return 'bg-[#E2E8F0] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'In Progress': return 'bg-[#60A5FA] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Blocked': return 'bg-[#F87171] text-black font-black border-2 border-black shadow-[2px_2px_0px_#000]';
-    case 'Completed': return 'bg-[#4ADE80] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Pending': return 'bg-[#FFFFFF] text-black font-bold border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'In Progress': return 'bg-[#2563EB] text-white font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Blocked': return 'bg-[#EF4444] text-white font-black border-2 border-black shadow-[2px_2px_0px_#000]';
+    case 'Completed': return 'bg-[#FFFFFF] text-[#1D4ED8] font-black border-2 border-black shadow-[2px_2px_0px_#000]';
   }
 }
 
 export function markerColor(p: Priority): string {
   switch (p) {
     case 'Critical': return '#EF4444';
-    case 'High': return '#F47B20';
-    case 'Medium': return '#EAB308';
+    case 'High': return '#2563EB';
+    case 'Medium': return '#FFFFFF';
     case 'Low': return '#64748B';
   }
 }

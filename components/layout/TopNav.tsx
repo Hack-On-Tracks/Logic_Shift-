@@ -44,7 +44,7 @@ export default function TopNav() {
         <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-mono tracking-widest uppercase">
           {pageInfo.breadcrumb.map((crumb, i) => (
             <span key={crumb} className="flex items-center gap-1.5">
-              {i > 0 && <span className="text-[#F47B20] font-black">&gt;</span>}
+              {i > 0 && <span className="text-[#2563EB] font-black">&gt;</span>}
               <span>{crumb}</span>
             </span>
           ))}
@@ -53,7 +53,7 @@ export default function TopNav() {
 
       {/* Date badge */}
       {currentTime && (
-        <span className="bg-[#111C2E] border-2 border-black text-[#F47B20] text-xs font-mono font-bold px-3 py-1 shadow-[2px_2px_0px_#000] hidden lg:block whitespace-nowrap">
+        <span className="bg-[#111C2E] border-2 border-black text-[#2563EB] text-xs font-mono font-bold px-3 py-1 shadow-[2px_2px_0px_#000] hidden lg:block whitespace-nowrap">
           {currentTime}
         </span>
       )}
@@ -62,12 +62,12 @@ export default function TopNav() {
       <div className="relative">
         <button
           onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); }}
-          className="relative p-2 border-2 border-black bg-[#111C2E] hover:bg-[#F47B20] text-white hover:text-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+          className="relative p-2 border-2 border-black bg-[#111C2E] hover:bg-[#2563EB] text-white shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
           aria-label="Notifications"
         >
           <Bell size={18} className="stroke-[2.5]" />
           {unread > 0 && (
-            <span className="absolute -top-2 -right-2 px-1.5 py-0.2 bg-[#EF4444] border-2 border-black text-black text-[10px] font-black font-mono shadow-[1px_1px_0px_#000]">
+            <span className="absolute -top-2 -right-2 px-1.5 py-0.2 bg-[#EF4444] border-2 border-black text-white text-[10px] font-black font-mono shadow-[1px_1px_0px_#000]">
               {unread > 9 ? '9+' : unread}
             </span>
           )}
@@ -77,7 +77,7 @@ export default function TopNav() {
           <div className="absolute right-0 top-12 w-80 bg-[#111C2E] border-3 border-black shadow-[6px_6px_0px_#000] z-50 overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 bg-[#0B1220] border-b-2 border-black">
               <span className="text-white font-black text-xs font-mono uppercase tracking-wider">DISPATCH ALERTS</span>
-              <button onClick={clearAllNotifications} className="text-[#F47B20] hover:text-white text-[10px] font-mono uppercase tracking-wider font-bold">
+              <button onClick={clearAllNotifications} className="text-[#2563EB] hover:text-white text-[10px] font-mono uppercase tracking-wider font-bold">
                 [CLEAR ALL]
               </button>
             </div>
@@ -114,8 +114,8 @@ export default function TopNav() {
           onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
           className="flex items-center gap-2.5 p-1.5 border-2 border-black bg-[#111C2E] hover:bg-white/10 shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
         >
-          <div className="w-8 h-8 bg-[#F47B20] border-2 border-black flex items-center justify-center">
-            <User size={16} className="text-black stroke-[3]" />
+          <div className="w-8 h-8 bg-[#2563EB] border-2 border-black flex items-center justify-center">
+            <User size={16} className="text-white stroke-[3]" />
           </div>
           <div className="hidden md:block text-left pr-1">
             <p className="text-white text-xs font-black font-mono uppercase tracking-wider">COMMANDER</p>
@@ -130,10 +130,10 @@ export default function TopNav() {
               <p className="text-white text-xs font-black font-mono uppercase tracking-wider">DEMO RESPONDER</p>
               <p className="text-slate-400 text-[10px] font-mono uppercase">PROTOTYPE MODE</p>
             </div>
-            <button className="w-full flex items-center gap-2.5 px-4 py-2.5 text-slate-300 hover:text-black hover:bg-[#F47B20] text-xs font-mono font-bold uppercase transition">
+            <button className="w-full flex items-center gap-2.5 px-4 py-2.5 text-slate-300 hover:text-white hover:bg-[#2563EB] text-xs font-mono font-bold uppercase transition">
               <Settings size={14} /> SYSTEM CONFIG
             </button>
-            <button className="w-full flex items-center gap-2.5 px-4 py-2.5 text-slate-300 hover:text-black hover:bg-[#EF4444] text-xs font-mono font-bold uppercase transition">
+            <button className="w-full flex items-center gap-2.5 px-4 py-2.5 text-slate-300 hover:text-white hover:bg-[#EF4444] text-xs font-mono font-bold uppercase transition">
               <LogOut size={14} /> LOGOUT (DEMO)
             </button>
           </div>

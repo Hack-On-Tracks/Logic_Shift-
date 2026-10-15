@@ -36,15 +36,15 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Logo */}
       <div className={cn('flex items-center gap-3 px-4 py-5 border-b-2 border-black bg-[#070B14]', collapsed && 'justify-center px-2')}>
         <div className="relative flex-shrink-0">
-          <div className="w-10 h-10 bg-[#F47B20] border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_#000]">
-            <Target size={22} className="text-black stroke-[2.5]" />
+          <div className="w-10 h-10 bg-[#2563EB] border-2 border-black flex items-center justify-center shadow-[3px_3px_0px_#000]">
+            <Target size={22} className="text-white stroke-[2.5]" />
           </div>
-          <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#4ADE80] border-2 border-black animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#EF4444] border-2 border-black animate-pulse" />
         </div>
         {!collapsed && (
           <div>
             <div className="flex items-center gap-1.5">
-              <Radio size={13} className="text-[#F47B20]" />
+              <Radio size={13} className="text-[#2563EB]" />
               <span className="text-white font-black text-base tracking-wider font-mono">LIVE TRACK</span>
             </div>
             <span className="text-slate-400 text-[10px] font-mono tracking-widest uppercase">BY LOGIC SHIFT</span>
@@ -65,13 +65,13 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 'group flex items-center gap-3 px-3.5 py-2.5 transition-all text-xs font-mono tracking-wider',
                 collapsed ? 'justify-center px-2' : '',
                 active
-                  ? 'bg-[#F47B20] text-black font-black border-2 border-black shadow-[3px_3px_0px_#000] translate-x-[-1px] translate-y-[-1px]'
+                  ? 'bg-[#2563EB] text-white font-black border-2 border-black shadow-[3px_3px_0px_#000] translate-x-[-1px] translate-y-[-1px]'
                   : 'text-slate-300 border-2 border-transparent hover:border-black hover:bg-white/5 hover:text-white hover:shadow-[3px_3px_0px_#000]'
               )}
             >
-              <Icon size={18} className={cn('flex-shrink-0 stroke-[2.5]', active ? 'text-black' : 'text-slate-400 group-hover:text-white')} />
+              <Icon size={18} className={cn('flex-shrink-0 stroke-[2.5]', active ? 'text-white' : 'text-slate-400 group-hover:text-white')} />
               {!collapsed && <span className="flex-1 truncate">{label}</span>}
-              {!collapsed && active && <div className="w-2 h-2 bg-black flex-shrink-0" />}
+              {!collapsed && active && <div className="w-2 h-2 bg-white flex-shrink-0" />}
             </Link>
           );
         })}
@@ -80,7 +80,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Toggle button */}
       <button
         onClick={onToggle}
-        className="absolute -right-3.5 top-20 w-7 h-7 bg-[#F47B20] border-2 border-black flex items-center justify-center text-black font-black shadow-[2px_2px_0px_#000] hover:bg-[#FFA154] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all z-30"
+        className="absolute -right-3.5 top-20 w-7 h-7 bg-[#2563EB] border-2 border-black flex items-center justify-center text-white font-black shadow-[2px_2px_0px_#000] hover:bg-[#1D4ED8] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all z-30"
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
         {collapsed ? <ChevronRight size={14} className="stroke-[3]" /> : <ChevronLeft size={14} className="stroke-[3]" />}

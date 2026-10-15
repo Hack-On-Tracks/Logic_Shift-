@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #070B14;
+  --background: #060A14;
   --foreground: #FFFFFF;
 }
 
@@ -14,28 +14,28 @@ body {
 /* Brutalist raw grid background helper */
 .brutal-grid {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 /* Brutalist Custom scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #0B1220; border-left: 2px solid #000; }
-::-webkit-scrollbar-thumb { background: #F47B20; border: 2px solid #000; }
-::-webkit-scrollbar-thumb:hover { background: #FF9238; }
+::-webkit-scrollbar-track { background: #0A101F; border-left: 2px solid #000000; }
+::-webkit-scrollbar-thumb { background: #2563EB; border: 2px solid #000000; }
+::-webkit-scrollbar-thumb:hover { background: #3B82F6; }
 
 /* Brutalist Leaflet Overrides */
 .leaflet-container {
-  background: #0A101D !important;
+  background: #080D1A !important;
   border: 3px solid #000000 !important;
   box-shadow: 4px 4px 0px 0px #000000 !important;
   border-radius: 0px !important;
 }
 
 .leaflet-control-zoom a {
-  background: #F47B20 !important;
-  color: #000000 !important;
+  background: #2563EB !important;
+  color: #FFFFFF !important;
   font-weight: 900 !important;
   border: 2px solid #000000 !important;
   box-shadow: 2px 2px 0px #000000 !important;
@@ -43,13 +43,13 @@ body {
 }
 
 .leaflet-control-zoom a:hover {
-  background: #FFA154 !important;
+  background: #1D4ED8 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #0B1220 !important;
+  background: #0B132B !important;
   border: 3px solid #000000 !important;
-  box-shadow: 5px 5px 0px 0px #F47B20 !important;
+  box-shadow: 5px 5px 0px 0px #EF4444 !important;
   border-radius: 0px !important;
   color: #FFFFFF !important;
 }
@@ -64,5 +64,5 @@ body {
 }
 
 .leaflet-tile-pane {
-  filter: brightness(0.65) contrast(1.25) saturate(0.5) hue-rotate(195deg);
+  filter: brightness(0.65) contrast(1.25) saturate(0.6) hue-rotate(205deg);
 }

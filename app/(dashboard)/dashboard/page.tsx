@@ -46,7 +46,7 @@ export default function DashboardPage() {
     return Object.entries(counts).map(([name, value]) => ({ name: name.replace(' ', '\n'), value }));
   }, [incidents]);
 
-  const COLORS = ['#EF4444', '#F47B20', '#FACC15', '#38BDF8', '#C084FC', '#4ADE80', '#94A3B8'];
+  const COLORS = ['#EF4444', '#2563EB', '#FFFFFF', '#38BDF8', '#818CF8', '#4ADE80', '#94A3B8'];
 
   const priorityCounts = useMemo(() => ({
     Critical: incidents.filter(i => i.priority === 'Critical').length,
@@ -58,7 +58,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Demo status banner */}
-      <div className="flex items-center gap-3 bg-[#F47B20] text-black border-2 border-black p-3.5 shadow-[4px_4px_0px_#000]">
+      <div className="flex items-center gap-3 bg-[#2563EB] text-white border-2 border-black p-3.5 shadow-[4px_4px_0px_#000]">
         <Activity size={18} className="stroke-[3] flex-shrink-0" />
         <p className="text-xs font-mono font-black uppercase tracking-wider">
           TACTICAL DEMO MODE ACTIVE // ALL INCIDENT TELEMETRY AND VISION DATA GENERATED LOCALLY
@@ -67,14 +67,14 @@ export default function DashboardPage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard label="TOTAL INCIDENTS" value={stats.totalIncidents} icon={AlertTriangle} color="text-black" iconBg="bg-[#F47B20]" />
-        <StatCard label="ACTIVE THREATS" value={stats.activeIncidents} icon={Activity} color="text-black" iconBg="bg-[#EF4444]" />
+        <StatCard label="TOTAL INCIDENTS" value={stats.totalIncidents} icon={AlertTriangle} color="text-white" iconBg="bg-[#2563EB]" />
+        <StatCard label="ACTIVE THREATS" value={stats.activeIncidents} icon={Activity} color="text-white" iconBg="bg-[#EF4444]" />
         <StatCard label="SURVEY IMAGES" value={stats.totalAnalyses} icon={ScanSearch} color="text-black" iconBg="bg-[#38BDF8]" />
-        <StatCard label="VICTIMS FOUND" value={stats.people} icon={Users} color="text-black" iconBg="bg-[#4ADE80]" subtitle="CV DEMO" />
+        <StatCard label="VICTIMS FOUND" value={stats.people} icon={Users} color="text-black" iconBg="bg-white" subtitle="CV DEMO" />
         <StatCard label="VEHICLES SPOTTED" value={stats.vehicles} icon={Car} color="text-black" iconBg="bg-[#C084FC]" subtitle="CV DEMO" />
-        <StatCard label="ROAD OBSTACLES" value={stats.obstacles} icon={Construction} color="text-black" iconBg="bg-[#FACC15]" subtitle="CV DEMO" />
-        <StatCard label="DISPATCH TICKETS" value={stats.openTasks} icon={ClipboardList} color="text-black" iconBg="bg-[#FB923C]" />
-        <StatCard label="TASKS RESOLVED" value={stats.completedTasks} icon={CheckCircle2} color="text-black" iconBg="bg-[#4ADE80]" />
+        <StatCard label="ROAD OBSTACLES" value={stats.obstacles} icon={Construction} color="text-white" iconBg="bg-[#EF4444]" subtitle="CV DEMO" />
+        <StatCard label="DISPATCH TICKETS" value={stats.openTasks} icon={ClipboardList} color="text-black" iconBg="bg-[#38BDF8]" />
+        <StatCard label="TASKS RESOLVED" value={stats.completedTasks} icon={CheckCircle2} color="text-black" iconBg="bg-white" />
       </div>
 
       {/* Quick Action Buttons */}
@@ -83,7 +83,7 @@ export default function DashboardPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/incidents"
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all font-mono"
           >
             <Plus size={15} className="stroke-[3]" /> LOG INCIDENT
           </Link>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 bg-[#111C2E] border-3 border-black shadow-[6px_6px_0px_#000] overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3.5 bg-[#0B1220] border-b-2 border-black">
             <h2 className="text-white font-black text-xs font-mono uppercase tracking-wider">RECENT INCIDENT FEED</h2>
-            <Link href="/incidents" className="text-[#F47B20] text-xs font-mono font-bold uppercase hover:underline">VIEW ALL &gt;</Link>
+            <Link href="/incidents" className="text-[#2563EB] text-xs font-mono font-bold uppercase hover:underline">VIEW ALL &gt;</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full font-mono">
@@ -134,7 +134,7 @@ export default function DashboardPage() {
               <tbody className="divide-y-2 divide-black">
                 {recentIncidents.map((inc) => (
                   <tr key={inc.id} className="hover:bg-white/5 transition">
-                    <td className="px-5 py-3 text-[#F47B20] text-xs font-black">{inc.id}</td>
+                    <td className="px-5 py-3 text-[#2563EB] text-xs font-black">{inc.id}</td>
                     <td className="px-5 py-3">
                       <p className="text-white text-xs font-black">{truncate(inc.title, 38)}</p>
                       <p className="text-slate-400 text-[11px] mt-0.5">{inc.disasterType} · {timeAgo(inc.reportedAt)}</p>
@@ -156,12 +156,12 @@ export default function DashboardPage() {
               PRIORITY SEVERITY
             </h2>
             <div className="space-y-3 font-mono">
-              {([['Critical', 'bg-[#EF4444]', '#EF4444'], ['High', 'bg-[#F47B20]', '#F47B20'], ['Medium', 'bg-[#FACC15]', '#FACC15'], ['Low', 'bg-[#94A3B8]', '#94A3B8']] as const).map(([p, color]) => (
+              {([['Critical', 'bg-[#EF4444]', '#EF4444'], ['High', 'bg-[#2563EB]', '#2563EB'], ['Medium', 'bg-white', '#FFFFFF'], ['Low', 'bg-[#94A3B8]', '#94A3B8']] as const).map(([p, color, hex]) => (
                 <div key={p} className="flex items-center gap-3">
                   <div className={`w-3.5 h-3.5 border border-black ${color} flex-shrink-0`} />
                   <span className="text-white text-xs font-bold uppercase flex-1">{p}</span>
                   <div className="flex-1 h-3 bg-black border border-white/20 overflow-hidden">
-                    <div className={`h-full ${color}`} style={{ width: `${stats.totalIncidents ? (priorityCounts[p] / stats.totalIncidents) * 100 : 0}%` }} />
+                    <div className="h-full" style={{ backgroundColor: hex, width: `${stats.totalIncidents ? (priorityCounts[p] / stats.totalIncidents) * 100 : 0}%` }} />
                   </div>
                   <span className="text-white text-xs font-black w-5 text-right">{priorityCounts[p]}</span>
                 </div>
@@ -222,10 +222,10 @@ export default function DashboardPage() {
           </h2>
           <div className="space-y-3">
             {activityItems.map((item, i) => (
-              <div key={i} className="flex gap-3 items-start border-l-3 border-[#F47B20] pl-3 py-1 bg-black/40">
+              <div key={i} className="flex gap-3 items-start border-l-3 border-[#2563EB] pl-3 py-1 bg-black/40">
                 <div className="flex-1 min-w-0">
                   <p className="text-slate-200 text-xs font-black">{item.text}</p>
-                  {item.time && <p className="text-[#F47B20] text-[10px] mt-0.5 tracking-wider">{timeAgo(item.time)}</p>}
+                  {item.time && <p className="text-[#2563EB] text-[10px] mt-0.5 tracking-wider">{timeAgo(item.time)}</p>}
                 </div>
               </div>
             ))}

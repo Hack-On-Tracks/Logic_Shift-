@@ -51,7 +51,7 @@ function TaskForm({ initial, onSave, onClose, incidents }: {
 
   const field = 'flex flex-col gap-1.5';
   const label = 'text-white text-xs font-black uppercase tracking-wider font-mono';
-  const input = 'bg-[#0B1220] border-2 border-black rounded-none px-3 py-2 text-white text-sm font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const input = 'bg-[#0B1220] border-2 border-black rounded-none px-3 py-2 text-white text-sm font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
   const errCls = 'text-[#EF4444] text-xs font-mono font-bold';
 
   return (
@@ -119,7 +119,7 @@ function TaskForm({ initial, onSave, onClose, incidents }: {
         </button>
         <button
           type="submit"
-          className="flex-1 py-3 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          className="flex-1 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
         >
           DISPATCH DIRECTIVE
         </button>
@@ -201,7 +201,7 @@ export default function TasksPage() {
     showToast({ type: 'success', title: `DIRECTIVE REPOSITIONED -> ${status}` });
   }
 
-  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
 
   return (
     <div className="space-y-5 font-mono">
@@ -215,20 +215,20 @@ export default function TasksPage() {
           <div className="flex border-2 border-black shadow-[3px_3px_0px_#000]">
             <button
               onClick={() => setView('board')}
-              className={`px-3 py-2 text-xs font-black uppercase flex items-center gap-1.5 transition ${view === 'board' ? 'bg-[#F47B20] text-black' : 'bg-[#111C2E] text-slate-400 hover:text-white'}`}
+              className={`px-3 py-2 text-xs font-black uppercase flex items-center gap-1.5 transition ${view === 'board' ? 'bg-[#2563EB] text-white' : 'bg-[#111C2E] text-slate-400 hover:text-white'}`}
             >
               <LayoutGrid size={14} className="stroke-[3]" /> KANBAN
             </button>
             <button
               onClick={() => setView('table')}
-              className={`px-3 py-2 text-xs font-black uppercase flex items-center gap-1.5 transition ${view === 'table' ? 'bg-[#F47B20] text-black' : 'bg-[#111C2E] text-slate-400 hover:text-white'}`}
+              className={`px-3 py-2 text-xs font-black uppercase flex items-center gap-1.5 transition ${view === 'table' ? 'bg-[#2563EB] text-white' : 'bg-[#111C2E] text-slate-400 hover:text-white'}`}
             >
               <List size={14} className="stroke-[3]" /> ROSTER
             </button>
           </div>
           <button
             onClick={() => setFormOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
           >
             <Plus size={16} className="stroke-[3]" /> ISSUE DIRECTIVE
           </button>
@@ -240,7 +240,7 @@ export default function TasksPage() {
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
-            className="bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20] w-56"
+            className="bg-[#111C2E] border-2 border-black pl-9 pr-4 py-2 text-white text-xs font-mono placeholder-slate-500 shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB] w-56"
             placeholder="FILTER DIRECTIVES..."
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -282,9 +282,9 @@ export default function TasksPage() {
                     <p className="text-slate-500 text-xs text-center py-8 uppercase tracking-widest">[QUEUE EMPTY]</p>
                   )}
                   {colTasks.map(t => (
-                    <div key={t.id} className="bg-[#111C2E] border-2 border-black p-3.5 shadow-[3px_3px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#F47B20] transition-all">
+                    <div key={t.id} className="bg-[#111C2E] border-2 border-black p-3.5 shadow-[3px_3px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#2563EB] transition-all">
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-[#F47B20] text-[10px] font-black">{t.id}</span>
+                        <span className="text-[#2563EB] text-[10px] font-black">{t.id}</span>
                         <PriorityBadge priority={t.priority} />
                       </div>
                       <p className="text-white text-xs font-black leading-snug mb-1">{t.title}</p>
@@ -334,7 +334,7 @@ export default function TasksPage() {
                 <tbody className="divide-y-2 divide-black">
                   {filtered.map(t => (
                     <tr key={t.id} className="hover:bg-white/5 transition">
-                      <td className="px-5 py-3 text-[#F47B20] text-xs font-black">{t.id}</td>
+                      <td className="px-5 py-3 text-[#2563EB] text-xs font-black">{t.id}</td>
                       <td className="px-5 py-3">
                         <p className="text-white text-xs font-black">{truncate(t.title, 42)}</p>
                         <p className="text-slate-400 text-[11px] mt-0.5">{t.description ? truncate(t.description, 45) : ''}</p>
@@ -413,7 +413,7 @@ export default function TasksPage() {
                   <button
                     key={s}
                     onClick={() => { quickStatusChange(detailTask, s); setDetailTask({ ...detailTask, status: s }); }}
-                    className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all ${detailTask.status === s ? 'bg-[#F47B20] text-black' : 'bg-black text-slate-300 hover:text-white'}`}
+                    className={`px-3 py-1.5 text-xs font-black uppercase tracking-wider border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all ${detailTask.status === s ? 'bg-[#2563EB] text-white' : 'bg-black text-slate-300 hover:text-white'}`}
                   >
                     {s}
                   </button>
@@ -429,7 +429,7 @@ export default function TasksPage() {
               </button>
               <button
                 onClick={() => { setEditTask(detailTask); setDetailTask(null); }}
-                className="flex-1 py-2.5 bg-[#F47B20] hover:bg-[#FFA154] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                className="flex-1 py-2.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               >
                 EDIT DIRECTIVE
               </button>

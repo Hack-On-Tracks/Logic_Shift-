@@ -19,8 +19,8 @@ const MapComponent = dynamic(() => import('@/components/map/MapComponent'), {
 
 const LEGEND = [
   { color: 'bg-[#EF4444]', label: 'CRITICAL' },
-  { color: 'bg-[#F47B20]', label: 'HIGH' },
-  { color: 'bg-[#FACC15]', label: 'MEDIUM' },
+  { color: 'bg-[#2563EB]', label: 'HIGH' },
+  { color: 'bg-white', label: 'MEDIUM' },
   { color: 'bg-[#94A3B8]', label: 'LOW' },
 ];
 
@@ -46,13 +46,13 @@ export default function MapPage() {
 
   const noCoords = incidents.filter(i => !i.latitude || !i.longitude);
 
-  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#F47B20]';
+  const select = 'bg-[#111C2E] border-2 border-black px-3 py-2 text-white text-xs font-mono font-bold uppercase shadow-[3px_3px_0px_#000] focus:outline-none focus:border-[#2563EB]';
 
   return (
     <div className="space-y-4 font-mono">
       {/* Controls Bar */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <div className="flex items-center gap-2 bg-[#F47B20] text-black border-2 border-black px-3 py-2 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000]">
+        <div className="flex items-center gap-2 bg-[#2563EB] text-white border-2 border-black px-3 py-2 text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#000]">
           <MapIcon size={16} className="stroke-[3]" />
           <span>{mappable.length} / {incidents.length} INCIDENTS POSITIONED</span>
         </div>
@@ -127,7 +127,7 @@ export default function MapPage() {
               <div className="space-y-2 text-xs divide-y divide-black/40 pt-1">
                 <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">SECTOR ZONE</p><p className="text-white font-bold">{selectedInc.locationName}</p></div>
                 <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">TAXONOMY</p><p className="text-white font-bold">{selectedInc.disasterType}</p></div>
-                <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">RESPONSE CORPS</p><p className="text-[#F47B20] font-black">{selectedInc.assignedTeam}</p></div>
+                <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">RESPONSE CORPS</p><p className="text-[#2563EB] font-black">{selectedInc.assignedTeam}</p></div>
                 <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">RECORDED</p><p className="text-white">{formatDateTime(selectedInc.reportedAt)}</p></div>
                 {selectedInc.latitude && (
                   <div className="pt-1"><p className="text-slate-400 text-[10px] uppercase font-bold">GPS COORDS</p><p className="text-[#38BDF8] font-bold">{selectedInc.latitude?.toFixed(4)}, {selectedInc.longitude?.toFixed(4)}</p></div>
@@ -135,7 +135,7 @@ export default function MapPage() {
               </div>
               <Link
                 href="/incidents"
-                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#F47B20] text-black font-black text-[11px] uppercase border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#FFA154] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all w-full justify-center"
+                className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#2563EB] text-white font-black text-[11px] uppercase border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-[#1D4ED8] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all w-full justify-center"
               >
                 OPEN FULL DOSSIER <ExternalLink size={12} className="stroke-[3]" />
               </Link>
@@ -143,7 +143,7 @@ export default function MapPage() {
           ) : (
             <div className="bg-[#111C2E] border-3 border-black shadow-[4px_4px_0px_#000] p-4">
               <div className="flex items-center gap-2 text-white font-black text-xs uppercase mb-1.5">
-                <MapIcon size={16} className="text-[#F47B20]" />
+                <MapIcon size={16} className="text-[#2563EB]" />
                 <span>INTERACTIVE TARGET SELECTION</span>
               </div>
               <p className="text-slate-400 text-[11px] leading-relaxed">SELECT ANY MAP MARKER TO RETRIEVE TARGET LOG TELEMETRY AND FIELD STATUS.</p>
@@ -154,14 +154,14 @@ export default function MapPage() {
           <div className="bg-[#111C2E] border-3 border-black shadow-[5px_5px_0px_#000] overflow-hidden flex-1">
             <div className="px-4 py-2.5 bg-[#0B1220] border-b-2 border-black flex items-center justify-between">
               <h3 className="text-white text-xs font-black uppercase tracking-wider">TARGET ROSTER</h3>
-              <span className="text-[#F47B20] text-xs font-black">{filtered.length}</span>
+              <span className="text-[#2563EB] text-xs font-black">{filtered.length}</span>
             </div>
             <div className="overflow-y-auto max-h-80 divide-y-2 divide-black">
               {filtered.map(inc => (
                 <button
                   key={inc.id}
                   onClick={() => setSelected(inc.id === selected ? null : inc.id)}
-                  className={`w-full text-left p-3 hover:bg-white/5 transition flex flex-col gap-1.5 ${selected === inc.id ? 'bg-[#F47B20]/15 border-l-4 border-l-[#F47B20]' : ''}`}
+                  className={`w-full text-left p-3 hover:bg-white/5 transition flex flex-col gap-1.5 ${selected === inc.id ? 'bg-[#2563EB]/20 border-l-4 border-l-[#2563EB]' : ''}`}
                 >
                   <p className="text-white text-xs font-black truncate">{inc.title}</p>
                   <div className="flex items-center justify-between">
