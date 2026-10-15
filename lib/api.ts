@@ -101,6 +101,99 @@ export interface ApiAnalysis {
   detections: ApiDetection[];
 }
 
+export interface ApiClassification {
+  primaryDisasterType: string;
+  secondaryDisasterTypes: string[];
+  confidence: number;
+  supportingEvidence: string[];
+  alternativeClassifications: string[];
+  uncertainties: string[];
+  recommendedWorkflowId: string;
+  requiredAnalysis: string[];
+  additionalInformationNeeded: string[];
+  isUncertain: boolean;
+}
+
+export interface ApiDisasterWorkflow {
+  workflowId: string;
+  category: string;
+  displayName: string;
+  description: string;
+  supportedClasses?: string[];
+  visualIndicators?: string[];
+  relevantMapLayers: string[];
+  recommendedRescueResources: string[];
+  potentialHazards: string[];
+  recommendedNextSteps: string[];
+  reportSections: string[];
+  missingDataRequirements: string[];
+}
+
+export interface ApiRegisteredModel {
+  modelId: string;
+  displayName: string;
+  filePath: string;
+  supportedClasses: string[];
+  modelVersion: string;
+  confidenceThreshold: number;
+  device: string;
+  isAvailable: boolean;
+  isSpecialized: boolean;
+  specializationNotes: string;
+  healthStatus: string;
+}
+
+export interface ApiAdaptiveAnalysisResult {
+  pipelineRunId: string;
+  status: string;
+  classification: ApiClassification;
+  workflow: ApiDisasterWorkflow;
+  secondaryWorkflows: { workflowId: string; category: string; displayName: string }[];
+  modelExecution: {
+    primaryModel: string;
+    modelDisplayName: string;
+    isUsingFallback: boolean;
+    missingCapabilities: { modelId: string; missingFeature: string; mitigation: string }[];
+    detectionsCount: number;
+    peopleDetected: number;
+    vehiclesDetected: number;
+    obstaclesDetected: number;
+    detections: ApiDetection[];
+    annotatedImageUrl: string;
+  };
+  weather: {
+    available: boolean;
+    reason?: string;
+    temperatureC?: number | null;
+    humidityPct?: number | null;
+    precipitationMm?: number | null;
+    rainMm?: number | null;
+    windSpeedKmh?: number | null;
+    windDirectionDeg?: number | null;
+    windGustsKmh?: number | null;
+    condition?: string;
+    riskImpact?: string;
+  };
+  severityAssessment: {
+    score: number;
+    severityLevel: string;
+    isPreliminary: boolean;
+    rubricApplied: string;
+    factors: { factor: string; impact: string; detail: string }[];
+    disclaimer: string;
+  };
+  downstreamSynchronization: {
+    incidentId?: string | null;
+    incidentTitle?: string | null;
+    analysisId?: string | null;
+    dispatchedTasksCount: number;
+    dispatchedTasks: { id: string; title: string; team: string; priority: string }[];
+    reportPdfUrl?: string | null;
+  };
+  humanVerificationNeeded: boolean;
+  verificationPrompts: string[];
+}
+
 export interface ApiTask {
   id: number;
   taskId: string;
@@ -296,6 +389,51 @@ export async function fetchAnalyses(): Promise<ApiAnalysis[]> {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// ADAPTIVE DISASTER IDENTIFICATION & AUTOMATION PIPELINE
+// ═══════════════════════════════════════════════════════════════
+export async function analyzeImageAdaptive(
+  file: File,
+  options?: {
+    notes?: string | null;
+    location?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    incidentId?: string | null;
+  }
+): Promise<ApiAdaptiveAnalysisResult> {
+  const form = new FormData();
+  form.append('file', file);
+  if (options?.notes) form.append('notes', options.notes);
+  if (options?.location) form.append('location', options.location);
+  if (options?.latitude != null) form.append('latitude', String(options.latitude));
+  if (options?.longitude != null) form.append('longitude', String(options.longitude));
+  if (options?.incidentId) form.append('incident_id', options.incidentId);
+
+  const res = await fetch(`${BASE}/api/vision/adaptive-analyze`, { method: 'POST', body: form });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`API ${res.status}: ${text}`);
+  }
+  const raw = await res.json();
+  return camelize<ApiAdaptiveAnalysisResult>(raw);
+}
+
+export async function fetchWorkflows(): Promise<ApiDisasterWorkflow[]> {
+  const raw = await apiFetch<object[]>('/api/workflows');
+  return camelize<ApiDisasterWorkflow[]>(raw);
+}
+
+export async function fetchWorkflow(idOrCategory: string): Promise<ApiDisasterWorkflow> {
+  const raw = await apiFetch<object>(`/api/workflows/${idOrCategory}`);
+  return camelize<ApiDisasterWorkflow>(raw);
+}
+
+export async function fetchRegisteredModels(): Promise<ApiRegisteredModel[]> {
+  const raw = await apiFetch<object[]>('/api/models');
+  return camelize<ApiRegisteredModel[]>(raw);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // TASKS
 // ═══════════════════════════════════════════════════════════════
 export async function fetchTasks(): Promise<ApiTask[]> {
@@ -459,3 +597,99 @@ export async function fetchHealth(): Promise<{
   const raw = await apiFetch<object>('/api/health');
   return camelize(raw);
 }
+
+// ═══════════════════════════════════════════════════════════════
+// CHECKBOX-DRIVEN GUIDED AI WORKFLOW
+// ═══════════════════════════════════════════════════════════════
+export interface ApiWorkflowSession {
+  id: string;
+  incidentId?: string | null;
+  analysisId?: string | null;
+  reportId?: string | null;
+  currentStep: number;
+  status: string;
+  fileName: string;
+  imagePath: string;
+  annotatedImagePath?: string | null;
+  classificationJson?: string | null;
+  detectionsJson?: string | null;
+  weatherJson?: string | null;
+  severityJson?: string | null;
+  reviewJson?: string | null;
+  locationJson?: string | null;
+  recommendationsJson?: string | null;
+  dispatchedTasksJson?: string | null;
+  errorMessage?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function startGuidedWorkflow(file: File): Promise<ApiWorkflowSession> {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch(`${BASE}/api/workflow/start`, {
+    method: 'POST',
+    body: form,
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => res.statusText);
+    throw new Error(`API ${res.status}: ${text}`);
+  }
+  const raw = await res.json();
+  return camelize<ApiWorkflowSession>(raw);
+}
+
+export async function fetchWorkflowSession(sessionId: string): Promise<ApiWorkflowSession> {
+  const raw = await apiFetch<object>(`/api/workflow/sessions/${sessionId}`);
+  return camelize<ApiWorkflowSession>(raw);
+}
+
+export async function approveWorkflowReview(
+  sessionId: string,
+  params: {
+    disasterType?: string;
+    severity?: string;
+    confirmedCheckboxes?: Record<string, boolean>;
+  }
+): Promise<ApiWorkflowSession> {
+  const raw = await apiFetch<object>(`/api/workflow/sessions/${sessionId}/approve-review`, {
+    method: 'POST',
+    body: JSON.stringify(snakify(params)),
+  });
+  return camelize<ApiWorkflowSession>(raw);
+}
+
+export async function setWorkflowLocation(
+  sessionId: string,
+  params: {
+    latitude?: number | null;
+    longitude?: number | null;
+    locationName?: string | null;
+    isUnknown?: boolean;
+  }
+): Promise<ApiWorkflowSession> {
+  const raw = await apiFetch<object>(`/api/workflow/sessions/${sessionId}/set-location`, {
+    method: 'POST',
+    body: JSON.stringify(snakify(params)),
+  });
+  return camelize<ApiWorkflowSession>(raw);
+}
+
+export async function approveWorkflowRecommendations(
+  sessionId: string,
+  approvedTasks: Array<{
+    title: string;
+    description: string;
+    assignedTeam: string;
+    priority: string;
+  }>
+): Promise<ApiWorkflowSession> {
+  const raw = await apiFetch<object>(`/api/workflow/sessions/${sessionId}/approve-recommendations`, {
+    method: 'POST',
+    body: JSON.stringify({
+      approved_tasks: approvedTasks.map(t => snakify(t)),
+    }),
+  });
+  return camelize<ApiWorkflowSession>(raw);
+}
+

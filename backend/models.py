@@ -134,3 +134,33 @@ class ActivityLog(Base):
     category = Column(String(100), nullable=False) # INCIDENT, TASK, VISION, ROUTE, BLOCKAGE, AI
     details = Column(Text, nullable=True)
     timestamp = Column(DateTime, default=utcnow)
+
+class WorkflowSession(Base):
+    __tablename__ = "workflow_sessions"
+
+    id = Column(String(50), primary_key=True, index=True) # e.g. WFS-XXXXXX
+    incident_id = Column(String(50), ForeignKey("incidents.id", ondelete="SET NULL"), nullable=True)
+    analysis_id = Column(String(50), ForeignKey("image_analyses.id", ondelete="SET NULL"), nullable=True)
+    report_id = Column(String(50), ForeignKey("incident_reports.id", ondelete="SET NULL"), nullable=True)
+
+    current_step = Column(Integer, default=1) # 1: Upload, 2: Analyze, 3: Review, 4: Map, 5: Incident Created, 6: Recommendations, 7: Map Sync, 8: Report Done
+    status = Column(String(50), default="CREATED") # CREATED, ANALYZING, PENDING_REVIEW, PENDING_LOCATION, PENDING_RECOMMENDATIONS, COMPLETED, FAILED
+
+    file_name = Column(String(255), nullable=False)
+    image_path = Column(String(500), nullable=False)
+    annotated_image_path = Column(String(500), nullable=True)
+
+    # JSON stored payloads
+    classification_json = Column(Text, nullable=True)
+    detections_json = Column(Text, nullable=True)
+    weather_json = Column(Text, nullable=True)
+    severity_json = Column(Text, nullable=True)
+    review_json = Column(Text, nullable=True)
+    location_json = Column(Text, nullable=True)
+    recommendations_json = Column(Text, nullable=True)
+    dispatched_tasks_json = Column(Text, nullable=True)
+
+    error_message = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=utcnow)
+    updated_at = Column(DateTime, default=utcnow, onupdate=utcnow)
+

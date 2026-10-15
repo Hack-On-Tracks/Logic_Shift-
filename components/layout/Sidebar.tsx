@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'OVERVIEW', icon: LayoutDashboard },
   { href: '/incidents', label: 'INCIDENTS', icon: AlertTriangle },
-  { href: '/analysis', label: 'AI ANALYSIS', icon: ScanSearch },
+  { href: '/analysis', label: 'AI WORKFLOW', icon: ScanSearch },
   { href: '/map', label: 'RESCUE MAP', icon: Map },
   { href: '/tasks', label: 'TASKS', icon: ClipboardList },
   { href: '/blockages', label: 'ROAD BLOCKAGES', icon: TriangleAlert },

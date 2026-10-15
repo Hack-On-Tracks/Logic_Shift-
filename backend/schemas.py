@@ -237,3 +237,50 @@ class DashboardStats(BaseModel):
     completed_tasks: int
     active_teams: int
     verified_blockages: int
+
+# ----------------- Guided Workflow Session -----------------
+class WorkflowApproveReviewRequest(BaseModel):
+    disaster_type: Optional[str] = None
+    severity: Optional[str] = None
+    confirmed_checkboxes: Optional[dict] = None
+
+class WorkflowSetLocationRequest(BaseModel):
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    location_name: Optional[str] = None
+    is_unknown: Optional[bool] = False
+
+class WorkflowTaskItem(BaseModel):
+    title: str
+    description: str
+    assigned_team: str = "Alpha Search Unit"
+    priority: str = "High"
+
+class WorkflowApproveRecommendationsRequest(BaseModel):
+    approved_tasks: List[WorkflowTaskItem] = []
+
+class WorkflowSessionOut(BaseModel):
+    id: str
+    incident_id: Optional[str] = None
+    analysis_id: Optional[str] = None
+    report_id: Optional[str] = None
+    current_step: int
+    status: str
+    file_name: str
+    image_path: str
+    annotated_image_path: Optional[str] = None
+    classification_json: Optional[str] = None
+    detections_json: Optional[str] = None
+    weather_json: Optional[str] = None
+    severity_json: Optional[str] = None
+    review_json: Optional[str] = None
+    location_json: Optional[str] = None
+    recommendations_json: Optional[str] = None
+    dispatched_tasks_json: Optional[str] = None
+    error_message: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+

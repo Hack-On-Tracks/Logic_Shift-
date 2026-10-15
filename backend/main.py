@@ -16,7 +16,8 @@ from dotenv import load_dotenv
 
 from .database import engine, get_db, init_db, SessionLocal
 from .models import (
-    Incident, RescueTask, ImageAnalysis, Detection, TeamLocation, RoadBlockage, IncidentReport, ActivityLog
+    Incident, RescueTask, ImageAnalysis, Detection, TeamLocation, RoadBlockage, IncidentReport, ActivityLog,
+    WorkflowSession
 )
 from .schemas import (
     IncidentCreate, IncidentUpdate, IncidentOut,
@@ -28,12 +29,18 @@ from .schemas import (
     ChatRequest, ChatResponse,
     CriticalityScoreRequest, CriticalityScoreResponse,
     ReportCreate, ReportOut,
-    DashboardStats
+    DashboardStats,
+    WorkflowApproveReviewRequest, WorkflowSetLocationRequest,
+    WorkflowApproveRecommendationsRequest, WorkflowSessionOut
 )
 from .services.yolo_service import yolo_service, UPLOADS_DIR
 from .services.gemini_service import gemini_service
 from .services.routing_service import routing_service
 from .services.pdf_service import pdf_service
+from .services.workflow_registry import workflow_registry
+from .services.model_registry import model_registry
+from .services.adaptive_pipeline import adaptive_pipeline
+from .services.guided_workflow_service import guided_workflow_service
 from .seed_data import seed_database_if_empty
 
 logging.basicConfig(level=logging.INFO)
@@ -321,6 +328,184 @@ def list_analyses(incident_id: Optional[str] = None, db: Session = Depends(get_d
     if incident_id:
         q = q.filter(ImageAnalysis.incident_id == incident_id)
     return q.order_by(ImageAnalysis.uploaded_at.desc()).all()
+
+# ----------------- Adaptive AI Automation -----------------
+@app.post("/api/vision/adaptive-analyze")
+async def run_adaptive_pipeline(
+    file: UploadFile = File(...),
+    notes: Optional[str] = Form(None),
+    location: Optional[str] = Form(None),
+    latitude: Optional[float] = Form(None),
+    longitude: Optional[float] = Form(None),
+    incident_id: Optional[str] = Form(None),
+    db: Session = Depends(get_db)
+):
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in [".jpg", ".jpeg", ".png"]:
+        raise HTTPException(status_code=400, detail="Only JPG, JPEG, and PNG images are supported.")
+
+    analysis_id = f"ANA-{uuid.uuid4().hex[:6].upper()}"
+    saved_filename = f"{analysis_id}_{file.filename}"
+    saved_path = os.path.join(UPLOADS_DIR, saved_filename)
+
+    with open(saved_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    result = adaptive_pipeline.execute_pipeline(
+        image_path=saved_path,
+        filename=file.filename,
+        notes=notes,
+        location_name=location,
+        latitude=latitude,
+        longitude=longitude,
+        incident_id=incident_id,
+        db=db,
+    )
+
+    # Broadcast event via WebSocket
+    await manager.broadcast({
+        "event": "ADAPTIVE_ANALYSIS_COMPLETED",
+        "data": {
+            "pipeline_run_id": result["pipeline_run_id"],
+            "disaster_type": result["classification"]["primary_disaster_type"],
+            "confidence": result["classification"]["confidence"],
+            "severity": result["severity_assessment"]["severity_level"],
+            "workflow": result["workflow"]["display_name"],
+            "incident_id": result["downstream_synchronization"]["incident_id"],
+            "people_detected": result["model_execution"]["people_detected"],
+        }
+    })
+
+    return result
+
+@app.get("/api/workflows")
+def list_disaster_workflows():
+    return workflow_registry.list_all()
+
+@app.get("/api/workflows/{workflow_id_or_category}")
+def get_disaster_workflow(workflow_id_or_category: str):
+    wf = workflow_registry.get(workflow_id_or_category)
+    if not wf:
+        raise HTTPException(status_code=404, detail="Disaster workflow not found")
+    return wf
+
+@app.get("/api/models")
+def list_registered_models():
+    return model_registry.list_models()
+
+# ----------------- Checkbox-Driven Guided AI Workflow -----------------
+@app.post("/api/workflow/start", response_model=WorkflowSessionOut)
+async def start_guided_workflow(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in [".jpg", ".jpeg", ".png"]:
+        raise HTTPException(status_code=400, detail="Only JPG, JPEG, and PNG images are supported.")
+
+    content = await file.read()
+    session = guided_workflow_service.start_session(
+        db=db,
+        image_bytes=content,
+        filename=file.filename
+    )
+
+    await manager.broadcast({
+        "event": "WORKFLOW_SESSION_STARTED",
+        "data": {
+            "session_id": session.id,
+            "current_step": session.current_step,
+            "status": session.status,
+            "file_name": session.file_name,
+        }
+    })
+    return session
+
+@app.get("/api/workflow/sessions/{session_id}", response_model=WorkflowSessionOut)
+def get_workflow_session(session_id: str, db: Session = Depends(get_db)):
+    session = db.query(WorkflowSession).filter(WorkflowSession.id == session_id).first()
+    if not session:
+        raise HTTPException(status_code=404, detail="Workflow session not found")
+    return session
+
+@app.post("/api/workflow/sessions/{session_id}/approve-review", response_model=WorkflowSessionOut)
+async def approve_workflow_review(
+    session_id: str,
+    req: WorkflowApproveReviewRequest,
+    db: Session = Depends(get_db)
+):
+    try:
+        session = guided_workflow_service.approve_review(
+            db=db,
+            session_id=session_id,
+            disaster_type=req.disaster_type,
+            severity_level=req.severity,
+            checkboxes=req.confirmed_checkboxes
+        )
+        await manager.broadcast({
+            "event": "WORKFLOW_STEP_CHANGED",
+            "data": {"session_id": session.id, "current_step": session.current_step, "status": session.status}
+        })
+        return session
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@app.post("/api/workflow/sessions/{session_id}/set-location", response_model=WorkflowSessionOut)
+async def set_workflow_location(
+    session_id: str,
+    req: WorkflowSetLocationRequest,
+    db: Session = Depends(get_db)
+):
+    try:
+        session = guided_workflow_service.set_location_and_create_incident(
+            db=db,
+            session_id=session_id,
+            latitude=req.latitude,
+            longitude=req.longitude,
+            location_name=req.location_name,
+            is_unknown=req.is_unknown or False,
+        )
+        await manager.broadcast({
+            "event": "INCIDENT_CREATED",
+            "data": {"id": session.incident_id, "session_id": session.id}
+        })
+        await manager.broadcast({
+            "event": "WORKFLOW_STEP_CHANGED",
+            "data": {"session_id": session.id, "current_step": session.current_step, "status": session.status}
+        })
+        return session
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@app.post("/api/workflow/sessions/{session_id}/approve-recommendations", response_model=WorkflowSessionOut)
+async def approve_workflow_recommendations(
+    session_id: str,
+    req: WorkflowApproveRecommendationsRequest,
+    db: Session = Depends(get_db)
+):
+    try:
+        tasks_dicts = [t.dict() for t in req.approved_tasks]
+        session = guided_workflow_service.approve_recommendations_and_finalize(
+            db=db,
+            session_id=session_id,
+            approved_tasks=tasks_dicts,
+        )
+        await manager.broadcast({
+            "event": "TASKS_CREATED",
+            "data": {"incident_id": session.incident_id, "session_id": session.id}
+        })
+        await manager.broadcast({
+            "event": "REPORT_GENERATED",
+            "data": {"incident_id": session.incident_id, "report_id": session.report_id}
+        })
+        await manager.broadcast({
+            "event": "WORKFLOW_COMPLETED",
+            "data": {"session_id": session.id, "incident_id": session.incident_id, "report_id": session.report_id}
+        })
+        return session
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
 
 # ----------------- Tasks -----------------
 @app.get("/api/tasks", response_model=List[TaskOut])
