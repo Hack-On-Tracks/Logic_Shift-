@@ -11,6 +11,8 @@ const PAGE_TITLES: Record<string, { title: string; breadcrumb: string[] }> = {
   '/analysis': { title: 'AERIAL AI VISION', breadcrumb: ['SYSTEM', 'AI ANALYSIS'] },
   '/map': { title: 'TACTICAL MAP', breadcrumb: ['SYSTEM', 'RESCUE MAP'] },
   '/tasks': { title: 'RESCUE DIRECTIVES', breadcrumb: ['SYSTEM', 'TASKS'] },
+  '/blockages': { title: 'ROAD BLOCKAGE ANALYSIS', breadcrumb: ['SYSTEM', 'BLOCKAGES'] },
+  '/assistant': { title: 'AI RESCUE ASSISTANT', breadcrumb: ['SYSTEM', 'AI ASSISTANT'] },
   '/reports': { title: 'AFTER-ACTION REPORTS', breadcrumb: ['SYSTEM', 'REPORTS'] },
   '/settings': { title: 'SYSTEM CONFIG', breadcrumb: ['SYSTEM', 'SETTINGS'] },
 };

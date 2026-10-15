@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import {
   Radio, LayoutDashboard, AlertTriangle, ScanSearch,
   Map, ClipboardList, FileText, Settings,
-  ChevronLeft, ChevronRight, Target,
+  ChevronLeft, ChevronRight, Target, TriangleAlert, Bot,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +14,8 @@ const NAV_ITEMS = [
   { href: '/analysis', label: 'AI ANALYSIS', icon: ScanSearch },
   { href: '/map', label: 'RESCUE MAP', icon: Map },
   { href: '/tasks', label: 'TASKS', icon: ClipboardList },
+  { href: '/blockages', label: 'ROAD BLOCKAGES', icon: TriangleAlert },
+  { href: '/assistant', label: 'AI ASSISTANT', icon: Bot },
   { href: '/reports', label: 'REPORTS', icon: FileText },
   { href: '/settings', label: 'SETTINGS', icon: Settings },
 ];
