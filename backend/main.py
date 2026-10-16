@@ -56,14 +56,22 @@ app = FastAPI(
 )
 
 # CORS configuration
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+default_origins = [
+    "https://logic-shift.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+env_frontend = os.getenv("FRONTEND_URL")
+allowed_origins = list(default_origins)
+if env_frontend:
+    for u in env_frontend.split(","):
+        cleaned = u.strip().rstrip("/")
+        if cleaned and cleaned not in allowed_origins:
+            allowed_origins.append(cleaned)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        frontend_url,
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

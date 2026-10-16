@@ -53,9 +53,12 @@ export default function DashboardPage() {
         }
       }
       setData(d);
+      setError(null);
       setLastRefresh(new Date().toLocaleTimeString('en-IN'));
-    } catch {
-      setError('Backend offline — showing cached data if available');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Connection failed';
+      console.error('[Dashboard Load Error]', err);
+      setError(`Backend offline (${msg}) — showing cached data if available`);
     } finally {
       setLoading(false);
     }

@@ -12,7 +12,7 @@ import PriorityBadge from '@/components/ui/PriorityBadge';
 import { IncidentStatusBadge } from '@/components/ui/StatusBadge';
 import { formatDate, formatDateTime, truncate } from '@/lib/utils';
 import { Report } from '@/lib/types';
-import { createReport } from '@/lib/api';
+import { createReport, getReportPdfUrl } from '@/lib/api';
 
 function ReportPreview({ report, incident, tasks, analyses, onClose }: {
   report: Report;
@@ -161,7 +161,7 @@ function ReportPreview({ report, incident, tasks, analyses, onClose }: {
           Close
         </button>
         <a
-          href={`http://localhost:8000/api/reports/${report.id}/pdf`}
+          href={getReportPdfUrl(report.id)}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#4ADE80] hover:bg-[#22C55E] text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
@@ -346,7 +346,7 @@ export default function ReportsPage() {
                       <td className="px-5 py-3">
                         <div className="flex items-center justify-center gap-2">
                           <button onClick={() => setViewReport(r)} className="p-1.5 border border-black bg-white/10 hover:bg-[#38BDF8] text-white hover:text-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all" title="Inspect"><Eye size={13} /></button>
-                          <a href={`http://localhost:8000/api/reports/${r.id}/pdf`} target="_blank" rel="noopener noreferrer" className="p-1.5 border border-black bg-white/10 hover:bg-[#4ADE80] text-white hover:text-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center justify-center" title="Download Official PDF"><Download size={13} /></a>
+                          <a href={getReportPdfUrl(r.id)} target="_blank" rel="noopener noreferrer" className="p-1.5 border border-black bg-white/10 hover:bg-[#4ADE80] text-white hover:text-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center justify-center" title="Download Official PDF"><Download size={13} /></a>
                           <button onClick={() => setDeleteId(r.id)} className="p-1.5 border border-black bg-white/10 hover:bg-[#EF4444] text-white hover:text-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all" title="Expunge"><Trash2 size={13} /></button>
                         </div>
                       </td>

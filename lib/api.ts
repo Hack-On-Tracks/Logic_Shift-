@@ -1,21 +1,51 @@
 // ============================================================
 // LIVE TRACK — Centralized Backend API Client
-// Base URL: process.env.NEXT_PUBLIC_API_URL (default: http://localhost:8000)
+// Base URL: process.env.NEXT_PUBLIC_API_URL with smart production fallback
 // ============================================================
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+export function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl && envUrl.trim()) {
+    return envUrl.trim().replace(/\/+$/, '');
+  }
+  // Production fallback: when running deployed on Vercel or remote browser
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      return 'https://logic-shift.onrender.com';
+    }
+  } else if (process.env.NODE_ENV === 'production') {
+    return 'https://logic-shift.onrender.com';
+  }
+  return 'http://localhost:8000';
+}
+
+export const API_BASE_URL = getApiBaseUrl();
+const BASE = API_BASE_URL;
 
 // ─── Generic fetch wrapper ───────────────────────────────────
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) },
-    ...init,
-  });
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText);
-    throw new Error(`API ${res.status}: ${text}`);
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const url = `${BASE}${cleanPath}`;
+  try {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) },
+      ...init,
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      console.error(`[API Error] HTTP ${res.status} on ${init?.method ?? 'GET'} ${cleanPath}`);
+      throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    }
+    return res.json() as Promise<T>;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(`[API Fetch Failed] ${init?.method ?? 'GET'} ${url} — ${err.message}`);
+    } else {
+      console.error(`[API Fetch Failed] ${init?.method ?? 'GET'} ${url}`);
+    }
+    throw err;
   }
-  return res.json() as Promise<T>;
 }
 
 // ─── Snake → Camel recursive transformer ─────────────────────
@@ -409,13 +439,22 @@ export async function analyzeImageAdaptive(
   if (options?.longitude != null) form.append('longitude', String(options.longitude));
   if (options?.incidentId) form.append('incident_id', options.incidentId);
 
-  const res = await fetch(`${BASE}/api/vision/adaptive-analyze`, { method: 'POST', body: form });
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText);
-    throw new Error(`API ${res.status}: ${text}`);
+  const url = `${BASE}/api/vision/adaptive-analyze`;
+  try {
+    const res = await fetch(url, { method: 'POST', body: form });
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      console.error(`[API Error] HTTP ${res.status} on POST /api/vision/adaptive-analyze`);
+      throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    }
+    const raw = await res.json();
+    return camelize<ApiAdaptiveAnalysisResult>(raw);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(`[API Fetch Failed] POST ${url} — ${err.message}`);
+    }
+    throw err;
   }
-  const raw = await res.json();
-  return camelize<ApiAdaptiveAnalysisResult>(raw);
 }
 
 export async function fetchWorkflows(): Promise<ApiDisasterWorkflow[]> {
@@ -627,16 +666,25 @@ export interface ApiWorkflowSession {
 export async function startGuidedWorkflow(file: File): Promise<ApiWorkflowSession> {
   const form = new FormData();
   form.append('file', file);
-  const res = await fetch(`${BASE}/api/workflow/start`, {
-    method: 'POST',
-    body: form,
-  });
-  if (!res.ok) {
-    const text = await res.text().catch(() => res.statusText);
-    throw new Error(`API ${res.status}: ${text}`);
+  const url = `${BASE}/api/workflow/start`;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: form,
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => res.statusText);
+      console.error(`[API Error] HTTP ${res.status} on POST /api/workflow/start`);
+      throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    }
+    const raw = await res.json();
+    return camelize<ApiWorkflowSession>(raw);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(`[API Fetch Failed] POST ${url} — ${err.message}`);
+    }
+    throw err;
   }
-  const raw = await res.json();
-  return camelize<ApiWorkflowSession>(raw);
 }
 
 export async function fetchWorkflowSession(sessionId: string): Promise<ApiWorkflowSession> {

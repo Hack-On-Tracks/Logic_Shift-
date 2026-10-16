@@ -15,10 +15,9 @@ import { formatDateTime, timeAgo, cn } from '@/lib/utils';
 import {
   analyzeImageAdaptive, fetchAnalyses, fetchWorkflows, fetchIncidents, fetchHealth,
   ApiAnalysis, ApiAdaptiveAnalysisResult, ApiDisasterWorkflow, ApiIncident,
+  API_BASE_URL as BASE_URL,
 } from '@/lib/api';
 import GuidedWorkflowView from '@/components/workflow/GuidedWorkflowView';
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
 
 type FilterClass = 'All' | 'person' | 'vehicle' | 'obstacle';
 

@@ -13,10 +13,8 @@ import LocationPickerMap from '@/components/map/LocationPickerMap';
 import {
   startGuidedWorkflow, approveWorkflowReview,
   setWorkflowLocation, approveWorkflowRecommendations,
-  ApiWorkflowSession, getReportPdfUrl,
+  ApiWorkflowSession, getReportPdfUrl, API_BASE_URL as BASE_URL,
 } from '@/lib/api';
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
 
 const STEPS = [
   { id: 1, label: 'Upload' },
