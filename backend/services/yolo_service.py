@@ -142,4 +142,36 @@ class YoloVisionService:
             "annotated_filename": annotated_filename,
         }
 
-yolo_service = YoloVisionService(os.getenv("YOLO_MODEL", "yolo26s.pt"))
+class _LazyYoloService:
+    """
+    Proxy that defers YoloVisionService construction until first use.
+    This ensures uvicorn binds to the port BEFORE the YOLO model
+    download/load happens — critical for Render's port-scan timeout.
+    """
+    def __init__(self):
+        self._service: YoloVisionService | None = None
+
+    def _ensure(self):
+        if self._service is None:
+            self._service = YoloVisionService(os.getenv("YOLO_MODEL", "yolo26s.pt"))
+
+    def initialize(self):
+        """Call from app startup event after uvicorn is already listening."""
+        self._ensure()
+
+    def detect(self, image_path: str, conf_threshold: float = 0.25):
+        self._ensure()
+        return self._service.detect(image_path, conf_threshold)  # type: ignore[union-attr]
+
+    @property
+    def model(self):
+        self._ensure()
+        return self._service.model  # type: ignore[union-attr]
+
+    @property
+    def loaded_model_name(self):
+        self._ensure()
+        return self._service.loaded_model_name  # type: ignore[union-attr]
+
+
+yolo_service = _LazyYoloService()

@@ -113,6 +113,11 @@ def on_startup():
         logger.info("Database initialized and verified with seed telemetry.")
     finally:
         db.close()
+    # Load YOLO in a background thread so uvicorn finishes binding to the port
+    # BEFORE the model download starts. This prevents Render's port-scan timeout.
+    import threading
+    threading.Thread(target=yolo_service.initialize, daemon=True, name="yolo-loader").start()
+    logger.info("YOLO model loading dispatched to background thread.")
 
 # ----------------- WebSocket -----------------
 @app.websocket("/ws/live")
