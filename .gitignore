@@ -42,8 +42,9 @@ next-env.d.ts
 
 # backend
 backend/.env
-backend/*.db
+*.db
 backend/uploads/
+
 *.pt
 __pycache__/
 *.pyc
