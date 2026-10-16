@@ -132,7 +132,17 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
-# ----------------- Health & Dashboard -----------------
+# ----------------- Root & Health & Dashboard -----------------
+@app.get("/")
+def root():
+    return {
+        "name": "RescueVision AI — LIVE TRACK API",
+        "status": "ONLINE",
+        "docs": "/docs",
+        "health": "/api/health",
+        "dashboard": "/api/dashboard"
+    }
+
 @app.get("/api/health")
 def health_check():
     return {
